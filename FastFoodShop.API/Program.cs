@@ -1,3 +1,5 @@
+using FastFoodShop.API.Context;
+using FastFoodShop.API.Services;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +10,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<FoodDbContext>();
+builder.Services.AddScoped<IOrderService,OrderService>();
+builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 builder.Host.UseSerilog((ctx,lc) =>
 lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
