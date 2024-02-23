@@ -9,5 +9,6 @@ namespace FastFoodShop.API.Services
         Task<bool> EditCategory(Category category);
         Task<bool> AddCategory(Category category);
         Task<bool> DeleteCategory(int id);
+        Task<Category> GetCategoryById(int id);
     }
 }

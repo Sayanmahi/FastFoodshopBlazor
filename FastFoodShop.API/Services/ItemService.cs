@@ -1,38 +1,78 @@
-﻿using FastFoodShop.API.Models;
+﻿using FastFoodShop.API.Context;
+using FastFoodShop.API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FastFoodShop.API.Services
 {
     public class ItemService : IItemService
     {
-        public IActionResult AddItem(Item item)
+        private readonly FoodDbContext db;
+        public ItemService(FoodDbContext db)
         {
-            throw new NotImplementedException();
+            this.db = db;
+        }
+        public async Task<bool> AddItem(Item item)
+        {
+            var d= await db.Items.AddAsync(item);
+            await db.SaveChangesAsync();
+            return (true);
         }
 
-        public IActionResult ChangeCategory(int itemId, int categoryId)
+        public async Task<bool> ChangeCategory(int itemId, int categoryId)
         {
-            throw new NotImplementedException();
+            var d= await db.Items.FirstOrDefaultAsync(x => x.Id==itemId);
+            if(d!=null)
+            {
+                d.CategoryId = categoryId;
+                await db.SaveChangesAsync();
+                return (true);
+            }
+            return (false);
+
         }
 
-        public IActionResult EditItem(Item item)
+        public async Task<bool> EditItem(Item item)
         {
-            throw new NotImplementedException();
+            var d= await db.Items.FirstOrDefaultAsync(x=>x.Id==item.Id);
+            if(d!=null)
+            {
+                d.ProdName = item.ProdName;
+                d.Price= item.Price;
+                d.Description = item.Description;
+                d.CategoryId = item.CategoryId;
+                d.ImageUrl = item.ImageUrl;
+                d.IsActive = item.IsActive;
+                await db.SaveChangesAsync();
+                return (true);
+            }
+            return (false);
         }
 
-        public IActionResult GetAllItems()
+        public async Task<List<Item>> GetAllItems()
         {
-            throw new NotImplementedException();
+            var d = await db.Items.ToListAsync();
+            return d;
         }
 
-        public IActionResult GetItemsBasedOnCategory(int Categoryid)//show only active Item
+        public async Task<List<Item>> GetItemsBasedOnCategory(int Categoryid)//show only active Item
         {
-            throw new NotImplementedException();
+            var d= await db.Items.Where(x=> x.CategoryId==Categoryid).ToListAsync();
+            return d;
         }
 
-        public IActionResult InActiveItem(int id)
+        public async Task<bool> InActiveItem(int id)
         {
-            throw new NotImplementedException();
+            var d= await db.Items.FirstOrDefaultAsync(x=> x.Id==id);
+            if(d!=null)
+            {
+                d.IsActive = 0;
+                await db.SaveChangesAsync();
+                return (true);
+            }
+            return (false);
         }
+
+       
     }
 }

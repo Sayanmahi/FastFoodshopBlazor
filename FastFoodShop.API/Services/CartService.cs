@@ -18,6 +18,7 @@ namespace FastFoodShop.API.Services
             var itemPrice = await db.Items.FindAsync(cart.ItemId);
             cart.Price = cart.Qty * itemPrice.Price;
             var d= await db.Carts.AddAsync(cart);
+            db.SaveChangesAsync();
             return (true);
         }
 
@@ -38,8 +39,9 @@ namespace FastFoodShop.API.Services
             var d = await db.Carts.FindAsync(cart.Id);
             if(d!=null)
             {
+                var dd = await db.Items.FirstOrDefaultAsync(x => x.Id == d.ItemId);
                 d.Qty = cart.Qty;
-                d.Price = cart.Qty * d.Price;
+                d.Price = cart.Qty * dd.Price;
                 await db.SaveChangesAsync();
                 return (true);
             }
@@ -56,6 +58,7 @@ namespace FastFoodShop.API.Services
                 var itemName = await db.Items.FindAsync(i.ItemId);
                 var dto = new MyOrder()
                 {
+                    Id = i.ItemId,
                     Qty = i.Qty,
                     Price = i.Price,
                     ItemName = itemName.ProdName
@@ -63,21 +66,6 @@ namespace FastFoodShop.API.Services
                 list.Add(dto);
             }
             return(list);
-        }
-
-        Task<bool> ICartService.AddToCart(Cart cart)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> ICartService.DeleteItem(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> ICartService.EditItem(Cart cart)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -1,43 +1,52 @@
-﻿using FastFoodShop.API.Models;
+﻿using FastFoodShop.API.Context;
+using FastFoodShop.API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FastFoodShop.API.Services
 {
     public class CategoryService : ICategoryService
     {
-        public IActionResult AddCategory(Category category)
+        private readonly FoodDbContext db;
+        public CategoryService(FoodDbContext db)
+        {
+            this.db = db;
+        }
+        public async Task<Category> GetCategoryById(int id)
+        {
+            var d= await db.Categories.FirstOrDefaultAsync(x=> x.Id==id);
+            return (d);
+        }
+        public async Task<bool> AddCategory(Category category)
+        {
+            var d= await db.Categories.AddAsync(category);
+            await db.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteCategory(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IActionResult DeleteCategory(int id)
+        public async Task<bool> EditCategory(Category category)
         {
-            throw new NotImplementedException();
+            var d= await db.Categories.FirstOrDefaultAsync(x=> x.Id==category.Id);
+            if(d!=null)
+            {
+                d.Name = category.Name;
+                d.ImageUrl=category.ImageUrl;
+                await db.SaveChangesAsync();
+                return (true);
+            }
+            return (false);
+
         }
 
-        public IActionResult EditCategory(Category category)
+        public async Task<List<Category>> GetAllCategories()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Category>> GetAllCategories()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> ICategoryService.AddCategory(Category category)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> ICategoryService.DeleteCategory(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> ICategoryService.EditCategory(Category category)
-        {
-            throw new NotImplementedException();
+            var d = await db.Categories.ToListAsync();
+            return d;
         }
     }
 }

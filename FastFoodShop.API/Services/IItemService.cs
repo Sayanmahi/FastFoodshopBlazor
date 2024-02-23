@@ -5,11 +5,11 @@ namespace FastFoodShop.API.Services
 {
     public interface IItemService
     {
-        IActionResult AddItem(Item item);
-        IActionResult EditItem(Item item);
-        IActionResult InActiveItem(int id);
-        IActionResult GetItemsBasedOnCategory(int CategoryId);
-        IActionResult GetAllItems();
-        IActionResult ChangeCategory(int itemId,int categoryId);
+        Task<bool> AddItem(Item item);
+        Task<bool> EditItem(Item item);
+        Task<bool> InActiveItem(int id);
+        Task<List<Item>> GetItemsBasedOnCategory(int CategoryId);
+        Task<List<Item>> GetAllItems();
+        Task<bool> ChangeCategory(int itemId,int categoryId);
     }
 }
