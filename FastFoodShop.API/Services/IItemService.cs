@@ -7,7 +7,7 @@ namespace FastFoodShop.API.Services
     {
         IActionResult AddItem(Item item);
         IActionResult EditItem(Item item);
-        IActionResult DeleteItem(int id);
+        IActionResult InActiveItem(int id);
         IActionResult GetItemsBasedOnCategory(int CategoryId);
         IActionResult GetAllItems();
         IActionResult ChangeCategory(int itemId,int categoryId);

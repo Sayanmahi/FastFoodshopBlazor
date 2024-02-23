@@ -86,6 +86,7 @@ namespace FastFoodShop.API.Services
             try {
                 foreach(var i in orders)
                 {
+                    i.date = DateTime.Now;
                     await _foodDbContext.AddAsync(i);
                     await _foodDbContext.SaveChangesAsync();
 

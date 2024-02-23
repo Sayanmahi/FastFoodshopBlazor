@@ -15,11 +15,6 @@ namespace FastFoodShop.API.Services
             throw new NotImplementedException();
         }
 
-        public IActionResult DeleteItem(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public IActionResult EditItem(Item item)
         {
             throw new NotImplementedException();
@@ -30,7 +25,12 @@ namespace FastFoodShop.API.Services
             throw new NotImplementedException();
         }
 
-        public IActionResult GetItemsBasedOnCategory(int Categoryid)
+        public IActionResult GetItemsBasedOnCategory(int Categoryid)//show only active Item
+        {
+            throw new NotImplementedException();
+        }
+
+        public IActionResult InActiveItem(int id)
         {
             throw new NotImplementedException();
         }
