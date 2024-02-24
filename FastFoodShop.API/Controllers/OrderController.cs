@@ -27,9 +27,9 @@ namespace FastFoodShop.API.Controllers
             return Ok(d);
         }
         [HttpGet("[action]")]
-        public async Task<IActionResult> MyOrders(int id)
+        public async Task<IActionResult> MyOrders(int cid)
         {
-            var d= await db.MyOrders(id);
+            var d= await db.MyOrders(cid);
             return Ok(d);
         }
         [HttpPost("[action]")]

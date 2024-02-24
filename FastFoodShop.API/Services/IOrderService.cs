@@ -11,7 +11,7 @@ namespace FastFoodShop.API.Services
         Task<bool> ValidateisDelieredOrder(int id);
         Task<bool> PlaceOrder(List<Order> orders);
         Task<List<MyOrder>> MyOrders(int id);
-        Task<List<Order>> ShowMyUndeliveredOrders(int id);
+        Task<List<MyOrder>> ShowMyUndeliveredOrders(int id);
         Task<bool> OrderIsPreparing(int id);
 
     }

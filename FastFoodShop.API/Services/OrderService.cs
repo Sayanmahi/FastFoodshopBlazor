@@ -67,10 +67,28 @@ namespace FastFoodShop.API.Services
             return (d);
         }
 
-        public async Task<List<Order>> MyOrders(int id)
+        public async Task<List<MyOrder>> MyOrders(int cid)
         {
-            var d= await _foodDbContext.Orders.Where(x => x.Id==id).ToListAsync();
-            return d;
+            var d= await _foodDbContext.Orders.Where(x => x.UserId==cid).ToListAsync();
+            List<MyOrder> l = new List<MyOrder>();
+            if(d!=null)
+            {
+                foreach (var i in d)
+                {
+                    var dd= await _foodDbContext.Items.FirstOrDefaultAsync(x=>x.Id==i.Id);
+                    MyOrder n = new MyOrder()
+                    {
+                        Id = i.Id,
+                        Qty = i.Qty,
+                        Price = i.Price,
+                        ItemName = dd.ProdName,
+                        date = i.date,
+                        isdelivered = i.isdelivered
+                    };
+                    l.Add(n);
+                }
+            }
+            return l;
         }
 
         public async Task<bool> OrderIsPreparing(int id)
@@ -136,16 +154,6 @@ namespace FastFoodShop.API.Services
             {
                 return (false);
             }
-        }
-
-        Task<List<MyOrder>> IOrderService.MyOrders(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<List<Order>> IOrderService.ShowMyUndeliveredOrders(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 }
